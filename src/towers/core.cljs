@@ -1,7 +1,6 @@
 (ns towers.core
   (:require
-    [towers.canvas :as canvas]
-    [thi.ng.color.core :as color]))
+    [towers.canvas :as canvas]))
 
 (enable-console-print!)
 (println "### Towers ###")
