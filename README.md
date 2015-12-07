@@ -4,7 +4,6 @@ A tile building cooperative board game.
 
 ## TODO
 
-- Clean it up
 - Draw a lot of tiles
 - Draw a character
 - Ability to move a character
