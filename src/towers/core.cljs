@@ -12,13 +12,13 @@
     (map #(* percent %) rgb)))
 
 (def tile-types {
-  :dirt  {:color [235 220 188] :walkable true}
+  :dirt  {:color [139 68 18] :walkable true}
   :sand  {:color [235 220 188] :walkable true}
   :grass {:color [80 220 80] :walkable true}
   :water {:color [80 120 220] :walkable false}})
 
 (def origin-x 400) ;; TODO: should calculate all dimensions and scale from svg
-(def origin-y 50)
+(def origin-y 150)
 
 (def svg-dom-element
   (js/document.getElementById "svg-goes-here"))
@@ -63,24 +63,15 @@
         [[left px-y] [px-x bottom] [right px-y] [px-x top]]
         (rgb-to-css face-color)))))
 
-(render-svg
-  (svg-tile 0 0 0 :grass))
+(defn svg-tile-stack [x y stack]
+  (map-indexed
+    (fn [z tile-type] (svg-tile x y z tile-type))
+    stack))
 
-;; TODO: if we change to SVG, we could move to a more functional map -> flatten -> render full result scheme
-;<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%">
-;  <g onclick="alert('!');">
-;    <polygon points="0,25 50,25 50,60 0,35" fill="rgb(50, 190, 80)"/>
-;    <polygon points="100,25 50,25 50,60 100,35" fill="rgb(110, 250, 140)"/>
-;    <polygon points="0,25 50,0 100,25 50,50" fill="rgb(80, 220, 110)"/>
-;  </g>
-;</svg>
-
-;(defn render-world [world]
-;  (doseq [row world]
-;    (doseq [stack row]
-;      (let [tiles (map-indexed #({:z %1 :tile-type %2}) (:stack stack))]
-;        (doseq [tile ])
-;          (render-tile (:x stack) (:y stack) (:z tile) (:tile-type tile))))))
+(defn svg-world [world]
+  (for [row world]
+    (for [cell row]
+      (svg-tile-stack (:x cell) (:y cell) (:stack cell)))))
 
 (def world-size 5)
 (def world
@@ -90,4 +81,4 @@
        :y y
        :stack [:sand :dirt :grass :water]})))
 
-;(render-world world)
+(render-svg (svg-world world))
