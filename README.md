@@ -5,6 +5,7 @@ A tile building cooperative board game.
 ## TODO
 
 - Draw a lot of tiles
+- Clean (move draw to render.cljs or some-such)
 - Draw a character
 - Ability to move a character
 - Tile-placing cards
