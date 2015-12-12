@@ -1,6 +1,5 @@
 (ns towers.core
-  (:require
-    [towers.canvas :as canvas]))
+  (:require clojure.string))
 
 (enable-console-print!)
 (println "### Towers ###")
@@ -12,47 +11,60 @@
   (let [percent (+ 1 delta-percent)]
     (map #(* percent %) rgb)))
 
-(defn draw-tile-px [{[x y] :pos px :px face-color :color}]
-  (let [face-half-width (/ px 2)
-        face-half-height (/ face-half-width 2)
-        thickness (/ px 5)
-        left (- x face-half-width)
-        right (+ x face-half-width)
-        top (- y face-half-height)
-        bottom (+ y face-half-height)
-        left-color (shade-rgb face-color -0.15)
-        right-color (shade-rgb face-color -0.3)
-        ]
-    (canvas/draw-polygon
-      [[left y] [x y] [x (+ bottom thickness)] [left (+ y thickness)]]
-      (rgb-to-css left-color))
-    (canvas/draw-polygon
-      [[right y] [x y] [x (+ bottom thickness)] [right (+ y thickness)]]
-      (rgb-to-css right-color))
-    (canvas/draw-polygon
-      [[left y] [x bottom] [right y] [x top]]
-      (rgb-to-css face-color))))
-
-
 (def tile-types {
   :dirt  {:color [235 220 188] :walkable true}
   :sand  {:color [235 220 188] :walkable true}
   :grass {:color [80 220 80] :walkable true}
   :water {:color [80 120 220] :walkable false}})
 
-
-(def origin-x 400) ;; TODO: should calculate all dimensions and scale from canvas
+(def origin-x 400) ;; TODO: should calculate all dimensions and scale from svg
 (def origin-y 50)
 
-;; TODO: less magic numbers, but also don't repeat calc in draw-tile-px
-(defn render-tile [x y z tile-type]
-  (draw-tile-px {
-    :pos [
-      (- origin-x (* x 40) (* y -40))
-      (+ origin-y (* y 20) (* x 20) (* z -16))]
-    :px 80
-    :color (:color (tile-type tile-types))}))
+(def svg-dom-element
+  (js/document.getElementById "svg-goes-here"))
 
+(defn render-svg [svg]
+  (set! (.-innerHTML svg-dom-element) svg))
+
+(defn svg-polygon [points color]
+  (str
+    "<polygon points='"
+    (clojure.string/join " " (map #(clojure.string/join "," %) points))
+    "' fill='"
+    color
+    "' />"))
+
+(defn svg-group [& content]
+  (str "<g>" (clojure.string/join content) "</g>"))
+
+(defn svg-tile [x y z tile-type]
+  (let [tile-size 80
+        face-half-width (/ tile-size 2)
+        face-half-height (/ face-half-width 2)
+        thickness (/ tile-size 5)
+        px-x (- origin-x (* x face-half-width) (* y face-half-width -1))
+        px-y (+ origin-y (* y face-half-height) (* x face-half-height) (* z thickness -1))
+        left (- px-x face-half-width)
+        right (+ px-x face-half-width)
+        top (- px-y face-half-height)
+        bottom (+ px-y face-half-height)
+        face-color (:color (tile-type tile-types))
+        left-color (shade-rgb face-color -0.15)
+        right-color (shade-rgb face-color -0.3)
+        ]
+    (svg-group
+      (svg-polygon
+        [[left px-y] [px-x px-y] [px-x (+ bottom thickness)] [left (+ px-y thickness)]]
+        (rgb-to-css left-color))
+      (svg-polygon
+        [[right px-y] [px-x px-y] [px-x (+ bottom thickness)] [right (+ px-y thickness)]]
+        (rgb-to-css right-color))
+      (svg-polygon
+        [[left px-y] [px-x bottom] [right px-y] [px-x top]]
+        (rgb-to-css face-color)))))
+
+(render-svg
+  (svg-tile 0 0 0 :grass))
 
 ;; TODO: if we change to SVG, we could move to a more functional map -> flatten -> render full result scheme
 ;<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%">
@@ -63,12 +75,12 @@
 ;  </g>
 ;</svg>
 
-(defn render-world [world]
-  (doseq [row world]
-    (doseq [stack row]
-      (let [tiles (map-indexed #({:z %1 :tile-type %2}) (:stack stack))]
-        (doseq [tile ])
-          (render-tile (:x stack) (:y stack) (:z tile) (:tile-type tile))))))
+;(defn render-world [world]
+;  (doseq [row world]
+;    (doseq [stack row]
+;      (let [tiles (map-indexed #({:z %1 :tile-type %2}) (:stack stack))]
+;        (doseq [tile ])
+;          (render-tile (:x stack) (:y stack) (:z tile) (:tile-type tile))))))
 
 (def world-size 5)
 (def world
@@ -78,4 +90,4 @@
        :y y
        :stack [:sand :dirt :grass :water]})))
 
-(render-world world)
+;(render-world world)
