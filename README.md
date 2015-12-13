@@ -4,7 +4,7 @@ A tile building cooperative board game.
 
 ## TODO
 
-- Draw a lot of tiles
+- Draw a slightly more interesting board (maybe try randomly weighted noise layers: https://www.npmjs.com/package/noisejs)
 - Clean (move draw to render.cljs or some-such)
 - Draw a character
 - Ability to move a character

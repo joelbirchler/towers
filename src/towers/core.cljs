@@ -73,12 +73,20 @@
     (for [cell row]
       (svg-tile-stack (:x cell) (:y cell) (:stack cell)))))
 
+(js/noise.seed (rand))
 (def world-size 5)
+
+(defn stack-height [x y]
+  (-> (js/noise.simplex2 (/ x 5) (/ y 5))
+      (+ 1)
+      (* 3)
+      js/Math.ceil))
+
 (def world
   (partition world-size
     (for [x (range world-size) y (range world-size)]
       {:x x
        :y y
-       :stack [:sand :dirt :grass :water]})))
+       :stack (repeat (stack-height x y) :sand)})))
 
 (render-svg (svg-world world))

@@ -12,3 +12,4 @@ pom.xml
 towers.iml
 .nrepl-port
 /.repl-*
+/node_modules
