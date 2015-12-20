@@ -12,10 +12,10 @@
     (map #(* percent %) rgb)))
 
 (def tile-types {
-  :dirt  {:color [139 68 18] :walkable true}
-  :sand  {:color [235 220 188] :walkable true}
-  :grass {:color [80 220 80] :walkable true}
-  :water {:color [80 120 220] :walkable false}})
+  :dirt       {:color [139 68 18] :walkable true}
+  :grass      {:color [80 220 80] :walkable true}
+  :sand       {:color [235 220 188] :walkable true}
+  :water      {:color [80 120 220] :walkable false}})
 
 (def origin-x 400) ;; TODO: should calculate all dimensions and scale from svg
 (def origin-y 150)
@@ -37,7 +37,7 @@
 (defn svg-group [& content]
   (str "<g>" (clojure.string/join content) "</g>"))
 
-(defn svg-tile [x y z tile-type]
+(defn svg-tile [x y z tile]
   (let [tile-size 80
         face-half-width (/ tile-size 2)
         face-half-height (/ face-half-width 2)
@@ -48,7 +48,10 @@
         right (+ px-x face-half-width)
         top (- px-y face-half-height)
         bottom (+ px-y face-half-height)
-        face-color (:color (tile-type tile-types))
+        tile-type (first tile)
+        tile-brightness (second tile)
+        base-color (:color (tile-type tile-types))
+        face-color (shade-rgb base-color tile-brightness)
         left-color (shade-rgb face-color -0.15)
         right-color (shade-rgb face-color -0.3)
         ]
@@ -65,7 +68,7 @@
 
 (defn svg-tile-stack [x y stack]
   (map-indexed
-    (fn [z tile-type] (svg-tile x y z tile-type))
+    (fn [z tile] (svg-tile x y z tile))
     stack))
 
 (defn svg-world [world]
@@ -74,7 +77,6 @@
       (svg-tile-stack (:x cell) (:y cell) (:stack cell)))))
 
 (js/noise.seed (rand))
-(def world-size 5)
 
 (defn stack-height [x y]
   (-> (js/noise.simplex2 (/ x 5) (/ y 5))
@@ -82,11 +84,23 @@
       (* 3)
       js/Math.ceil))
 
-(def world
-  (partition world-size
-    (for [x (range world-size) y (range world-size)]
-      {:x x
-       :y y
-       :stack (repeat (stack-height x y) :sand)})))
+(defn rand-tile-brightness []
+  (- (rand 0.18) 0.09))
 
+(defn base-tile [stack-height index]
+  (if (= (- stack-height 1) index) :grass :dirt))
+
+(defn generate-stack [height]
+  (let [types (map #(base-tile height %) (range height))
+        brightness (map rand-tile-brightness (range height))]
+    (map vector types brightness)))
+
+(defn generate-world [size]
+  (partition size
+     (for [x (range size) y (range size)]
+       {:x x
+        :y y
+        :stack (generate-stack (stack-height x y))})))
+
+(def world (generate-world 5))
 (render-svg (svg-world world))
