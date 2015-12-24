@@ -28,24 +28,8 @@
 (def hero-width 40)
 (def hero-height 20)
 
-(defn tile-to-px-coords [x y z]
-  [(- origin-x (* x tile-width 0.5) (* y tile-width -0.5))
-   (+ origin-y (* y tile-height 0.5) (* x tile-height 0.5) (* z tile-thickness -1))])
-
 (defn render-svg [svg]
   (set! (.-innerHTML svg-dom-element) svg))
-
-(defn svg-circle [x y r color]
-  (str
-    "<circle cx='"
-    x
-    "' cy='"
-    y
-    "' r='"
-    r
-    "' fill='"
-    color
-    "'/>"))
 
 (defn svg-polygon [points color]
   (str
@@ -82,27 +66,26 @@
 
 
 ;; TODO: This game specific stuff could go elsewhere (just need a better name)
-(defn svg-tile [x y z tile]
-  (let [px-coords (tile-to-px-coords x y z)
-        px-x (first px-coords)
-        px-y (second px-coords)
+(defn tile-to-px-coords [tile-coords]
+  {:x (- origin-x (* (:x tile-coords) tile-width 0.5) (* (:y tile-coords) tile-width -0.5))
+   :y (+ origin-y (* (:y tile-coords) tile-height 0.5) (* (:x tile-coords) tile-height 0.5) (* (:z tile-coords) tile-thickness -1))})
+
+(defn svg-tile [tile-coords tile]
+  (let [px-coords (tile-to-px-coords tile-coords)
         tile-type (first tile)
         tile-brightness (second tile)
         base-color (:color (tile-type tile/types))
-        face-color (color/shade base-color tile-brightness)
-        ]
-    (svg-prism px-x px-y tile-width tile-height tile-thickness face-color)))
+        face-color (color/shade base-color tile-brightness)]
+    (svg-prism (:x px-coords) (:y px-coords) tile-width tile-height tile-thickness face-color)))
 
-(defn svg-hero [x y z]
-  (let [px-coords (tile-to-px-coords x y z)
-        px-x (first px-coords)
-        px-y (second px-coords)
+(defn svg-hero [tile-coords]
+  (let [px-coords (tile-to-px-coords tile-coords)
         color [230 80 0]]
-    (svg-prism px-x px-y hero-width hero-height hero-thickness color)))
+    (svg-prism (:x px-coords) (:y px-coords) hero-width hero-height hero-thickness color)))
 
 (defn svg-tile-stack [x y stack]
   (map-indexed
-    (fn [z tile] (svg-tile x y z tile))
+    (fn [stack-index tile] (svg-tile {:x x :y y :z stack-index} tile))
     stack))
 
 (defn map-2d [my-fn my-list]
@@ -111,16 +94,13 @@
       (my-fn cell))))
 
 (defn svg-world [board hero]
-  (let [hero-x (nth hero 0)
-        hero-y (nth hero 1)
-        hero-z (nth hero 2)]
-    (map-2d
-      (fn [cell]
-        (let [x (:x cell)
-              y (:y cell)
-              stack (:stack cell)
-              tiles (svg-tile-stack x y stack)]
-          (if (and (= hero-y y) (= hero-x x))
-            (concat tiles [(svg-hero x y hero-z)])
-            tiles)))
-      board)))
+  (map-2d
+    (fn [cell]
+      (let [x (:x cell)
+            y (:y cell)
+            stack (:stack cell)
+            tiles (svg-tile-stack x y stack)]
+        (if (and (= (:y hero) y) (= (:x hero) x))
+          (concat tiles [(svg-hero hero)])
+          tiles)))
+    board))

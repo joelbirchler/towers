@@ -10,7 +10,7 @@
 ;; TODO: Add a hero
 ;; x. Create a function to drop a hero on top of any stack
 ;; x. Draw a hero twice as tall as the tiles
-;; 2. Stop using arrays for coords-- keys in maps would be cleaner
+;; x. Stop using arrays for coords-- keys in maps would be cleaner
 ;; 3. clean
 ;;    - world should describe both the "board" of "tiles" and the "hero" positions
 ;;    - think about breaking modules up more like react components (but don't necessarily use react)

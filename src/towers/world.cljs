@@ -11,8 +11,9 @@
     (nth (nth tiles x) y)))
 
 (defn coords-on-top-of [tiles x y]
-  [x y
-   (count (stack-at tiles x y))])
+  {:x x
+   :y y
+   :z (count (stack-at tiles x y))})
 
 (defn calc-tile-type [stack-height index]
   (if (= (- stack-height 1) index) :grass :dirt))
