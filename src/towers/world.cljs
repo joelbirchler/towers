@@ -6,6 +6,14 @@
 (defn rand-tile-brightness []
   (- (rand 0.18) 0.09))
 
+(defn stack-at [tiles x y]
+  (:stack
+    (nth (nth tiles x) y)))
+
+(defn coords-on-top-of [tiles x y]
+  [x y
+   (count (stack-at tiles x y))])
+
 (defn calc-tile-type [stack-height index]
   (if (= (- stack-height 1) index) :grass :dirt))
 
@@ -15,13 +23,12 @@
       (* 3)
       js/Math.ceil))
 
-
 (defn generate-stack [height]
   (let [types (map #(calc-tile-type height %) (range height))
         brightness (map rand-tile-brightness (range height))]
     (map vector types brightness)))
 
-(defn generate-world [size]
+(defn generate-board [size]
   (partition size
     (for [x (range size) y (range size)]
       {:x x

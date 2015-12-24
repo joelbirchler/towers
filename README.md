@@ -4,7 +4,6 @@ A tile building cooperative board game.
 
 ## TODO
 
-- Clean (move draw to render.cljs or some-such)
 - Draw a character
 - Ability to move a character
 - Tile-placing cards
