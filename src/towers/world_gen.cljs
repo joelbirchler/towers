@@ -1,4 +1,4 @@
-(ns towers.world)
+(ns towers.world-gen)
 
 
 (js/noise.seed (rand))

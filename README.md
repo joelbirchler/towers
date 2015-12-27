@@ -4,7 +4,8 @@ A tile building cooperative board game.
 
 ## TODO
 
-- Draw a character
+- Move to react
+- Fix build shit: http://boot-clj.com/
 - Ability to move a character
 - Tile-placing cards
 - Simple goals
@@ -32,6 +33,11 @@ Scores are *shared* amongst players, but hands (and therefore goals) are secret.
 
 
 ## Action Cards
+
+- place various block types
+- jump
+- power jump
+
 
 ## Goal Cards
 
