@@ -1,13 +1,12 @@
 (ns towers.components.hero
   (:require [towers.components.prism :as prism]
-            [towers.components.tile :as tile]))
+            [towers.render.dimensions :as dimensions]))
 
 
-(def hero-thickness 32)
-(def hero-width 40)
-(def hero-height 20)
+(def hero-height (* dimensions/grid-height 2))
+(def hero-width (/ dimensions/grid-width 2))
+(def hero-length (/ dimensions/grid-length 2))
+(def hero-color [230 80 0])
 
-(defn hero [tile-coords]
-  (let [px-coords (tile/to-px-coords tile-coords)
-        color [230 80 0]]
-    (prism/prism "hero" (:x px-coords) (:y px-coords) hero-width hero-height hero-thickness color)))
+(defn hero [xy]
+  (prism/prism "hero" (:x xy) (:y xy) hero-width hero-length hero-height hero-color))
