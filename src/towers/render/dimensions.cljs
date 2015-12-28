@@ -1,11 +1,11 @@
 (ns towers.render.dimensions)
 
 
-(def svg-width 800)
-(def svg-height 400)
+(def width 800)
+(def height 400)
 
-(def origin-x (/ svg-width 2))
-(def origin-y (/ svg-height 2))
+(def origin-x (/ width 2))
+(def origin-y (/ height 2))
 
 (def grid-height 16)
 (def grid-width 80)

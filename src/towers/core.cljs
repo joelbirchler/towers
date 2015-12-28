@@ -2,6 +2,7 @@
   (:require
     [towers.world-gen :as world-gen]
     [towers.components.board :as board]
+    [towers.render.dimensions :as dimensions]
     [reagent.core :as reagent]))
 
 
@@ -29,7 +30,7 @@
 
 (defn game []
   [:svg
-   {:xmlns "http://www.w3.org/2000/svg" :width "800" :height "400"}
+   {:xmlns "http://www.w3.org/2000/svg" :width dimensions/width :height dimensions/height}
    (board/world board hero)])
 
 (reagent/render-component [game] game-dom-element)
