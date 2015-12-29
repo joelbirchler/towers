@@ -4,8 +4,6 @@ A tile building cooperative board game.
 
 ## TODO
 
-- Move to react
-- Fix build shit: http://boot-clj.com/
 - Ability to move a character
 - Tile-placing cards
 - Simple goals
@@ -13,6 +11,19 @@ A tile building cooperative board game.
 ...
 
 - Second player (I think the board should always be angled POV to the character)
+
+
+## Building and Running
+
+I'm using the boot template from here: https://github.com/adzerk-oss/boot-cljs-example.
+
+To get going:
+>> boot dev
+
+To repl:
+>> boot repl --client
+boot.user=> (start-repl)
+(reload the page)
 
 
 ## Overview

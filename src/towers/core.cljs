@@ -16,18 +16,14 @@
 ;;    - https://yobriefca.se/blog/2014/06/04/publish-and-subscribe-with-core-dot-asyncs-pub-and-sub/
 
 
-(def board
-  (world-gen/generate-board 5))
-
-(def hero
-  (reagent/atom (world-gen/coords-on-top-of board 4 0)))
-
-(def game-dom-element
-  (js/document.getElementById "game"))
+(def board (world-gen/generate-board 5))
+(def hero (reagent/atom (world-gen/coords-on-top-of board 4 0)))
+(def game-dom-element (js/document.getElementById "game"))
 
 (defn game []
   [:svg
    {:xmlns "http://www.w3.org/2000/svg" :width dimensions/width :height dimensions/height}
    (board/world board @hero)])
 
-(reagent/render-component [game] game-dom-element)
+(defn main []
+  (reagent/render-component [game] game-dom-element))

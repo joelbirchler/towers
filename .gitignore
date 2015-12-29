@@ -11,5 +11,6 @@ pom.xml
 /.idea/
 towers.iml
 .nrepl-port
+.nrepl-history
 /.repl-*
 /node_modules
