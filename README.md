@@ -54,51 +54,12 @@ Scores are *shared* amongst players, but hands (and therefore goals) are secret.
 
 
 
-## Setup
+## MIT License
 
-Build your project once in dev mode with the following script and then open `index.html` in your browser.
+Copyright © 2016 Joel Birchler
 
-    ./scripts/build
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-To auto build your project in dev mode:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-    ./script/watch
-
-To start an auto-building Node REPL (requires
-[rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/), on OS X
-installable via brew):
-
-    ./scripts/repl
-
-To get source map support in the Node REPL:
-
-    lein npm install
-
-To start a browser REPL:
-
-1. Uncomment the following lines in src/towers/core.cljs:
-```clojure
-;; (defonce conn
-;;   (repl/connect "http://localhost:9000/repl"))
-```
-2. Run `./scripts/brepl`
-3. Browse to `http://localhost:9000` (you should see `Hello world!` in the web console)
-4. (back to step 3) you should now see the REPL prompt: `cljs.user=>`
-5. You may now evaluate ClojureScript statements in the browser context.
-
-For more info using the browser as a REPL environment, see
-[this](https://github.com/clojure/clojurescript/wiki/The-REPL-and-Evaluation-Environments#browser-as-evaluation-environment).
-
-Clean project specific out:
-
-    lein clean
-
-Build a single release artifact with the following script and then open `index_release.html` in your browser.
-
-    ./scripts/release
-
-## License
-
-Copyright © 2015 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
