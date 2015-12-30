@@ -18,11 +18,12 @@ A tile building cooperative board game.
 I'm using the boot template from here: https://github.com/adzerk-oss/boot-cljs-example.
 
 To get going:
->> boot dev
+> boot dev
+(visit http://localhost:3000/)
 
 To repl:
->> boot repl --client
-boot.user=> (start-repl)
+> boot repl --client
+> boot.user=> (start-repl)
 (reload the page)
 
 
