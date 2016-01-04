@@ -8,5 +8,6 @@
 (def hero-length (/ dimensions/grid-length 2))
 (def hero-color [230 80 0])
 
-(defn hero [xy]
-  (prism/prism "hero" (:x xy) (:y xy) hero-width hero-length hero-height hero-color))
+(defn hero [xyz]
+  (let [xy (dimensions/to-px-coords xyz)]
+    (prism/prism "hero" (:x xy) (:y xy) hero-width hero-length hero-height hero-color)))

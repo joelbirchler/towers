@@ -5,19 +5,18 @@
 
 
 (def types {
-  :dirt  {:color [139 68 18]   :walkable true}
-  :grass {:color [80 220 80]   :walkable true}
-  :sand  {:color [235 220 188] :walkable true}
-  :water {:color [80 120 220]  :walkable false}})
+  :dirt  {:color [139 68 18]   }
+  :grass {:color [80 220 80]   }
+  :sand  {:color [235 220 188] }
+  :water {:color [80 120 220]  }})
 
 
-(defn tile [xy tile]
-  (let [tile-type (first tile)
-        tile-brightness (second tile)
-        base-color (:color (tile-type types))
-        face-color (color/shade base-color tile-brightness)]
+(defn tile [tile-data walkable?]
+  (let [xy (dimensions/to-px-coords tile-data)
+        base-color (:color ((:type tile-data) types))
+        face-color (color/shade base-color (if walkable? 1.0 (:brightness tile-data)))]
     (prism/prism
-      (str "tile-" (:x xy) "-" (:y xy))
+      (str "tile-" (:x tile-data) "-" (:y tile-data) "-" (:z tile-data))
       (:x xy) (:y xy)
       dimensions/grid-width
       dimensions/grid-length

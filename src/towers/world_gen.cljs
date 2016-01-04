@@ -6,14 +6,12 @@
 (defn rand-tile-brightness []
   (- (rand 0.18) 0.09))
 
-(defn stack-at [tiles x y]
-  (:stack
-    (nth (nth tiles x) y)))
+(defn stack-at [board x y]
+  (filter #(and (= (:x %) x) (= (:y %) y)) board))
 
-(defn coords-on-top-of [tiles x y]
-  {:x x
-   :y y
-   :z (count (stack-at tiles x y))})
+(defn summit-at [board x y]
+  (inc (apply max
+    (map :z (stack-at board x y)))))
 
 (defn calc-tile-type [stack-height index]
   (if (= (- stack-height 1) index) :grass :dirt))
@@ -30,8 +28,10 @@
     (map vector types brightness)))
 
 (defn generate-board [size]
-  (partition size
+  (flatten
     (for [x (range size) y (range size)]
-      {:x x
-       :y y
-       :stack (generate-stack (calc-stack-height x y))})))
+      (let [stack-height (calc-stack-height x y)]
+        (for [z (range stack-height)]
+          {:x x :y y :z z
+           :type (calc-tile-type stack-height z)
+           :brightness (rand-tile-brightness)})))))

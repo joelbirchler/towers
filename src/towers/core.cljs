@@ -9,15 +9,9 @@
 (enable-console-print!)
 (println "### Towers ###")
 
-;; TODO:
-;; 5. Think about some sort of functional reactive-style or flux-style or rails-style pub/sub event flow
-;;    - I think maybe I want to use core.async
-;;    - https://github.com/pointslope/remit
-;;    - https://yobriefca.se/blog/2014/06/04/publish-and-subscribe-with-core-dot-asyncs-pub-and-sub/
 
-
-(def board (world-gen/generate-board 5))
-(def hero (reagent/atom (world-gen/coords-on-top-of board 4 0)))
+(def board (world-gen/generate-board 3))
+(def hero (reagent/atom {:x 0 :y 0 :z (world-gen/summit-at board 0 0)}))
 (def game-dom-element (js/document.getElementById "game"))
 
 (defn game []

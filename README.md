@@ -5,6 +5,10 @@ A tile building cooperative board game.
 ## TODO
 
 - Ability to move a character
+  - I don't like the world data structure that makes us repeat x y z in data and shape
+    (maybe just a single flat list of tiles would be better)
+  - Neighbors
+  - Some kind of command-patternish thing to modify the hero pos
 - Tile-placing cards
 - Simple goals
 
